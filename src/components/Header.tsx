@@ -1,6 +1,5 @@
 import React from 'react';
-import { Sun, Sprout, MapPin, Calendar, Compass, Download, Check, Loader2 } from 'lucide-react';
-import { downloadProjectZip } from '../utils/downloadZip';
+import { Sun, Sprout, MapPin, Calendar, Compass } from 'lucide-react';
 
 interface HeaderProps {
   activeSection: string;
@@ -15,22 +14,6 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
     { id: 'work', label: '작업 현황' },
     { id: 'review', label: '고객 후기' },
   ];
-
-  const [isZipping, setIsZipping] = React.useState(false);
-  const [downloadSuccess, setDownloadSuccess] = React.useState(false);
-
-  const handleDownload = async () => {
-    try {
-      setIsZipping(true);
-      await downloadProjectZip();
-      setDownloadSuccess(true);
-      setTimeout(() => setDownloadSuccess(false), 4000);
-    } catch (err) {
-      console.error('ZIP 생성 오류:', err);
-    } finally {
-      setIsZipping(false);
-    }
-  };
 
   return (
     <header className="w-full">
@@ -84,10 +67,10 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
           </div>
         </div>
 
-        {/* 빠른 메뉴 바로가기 & 소스코드 다운로드 버튼 */}
-        <div className="max-w-6xl mx-auto mt-6 pt-4 border-t border-orange-200/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        {/* 빠른 메뉴 바로가기 */}
+        <div className="max-w-6xl mx-auto mt-6 pt-4 border-t border-orange-200/60">
           <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-            <span className="text-stone-500 text-sm font-semibold shrink-0 hidden sm:inline flex items-center gap-1">
+            <span className="text-stone-500 text-sm font-semibold shrink-0 hidden sm:inline-flex items-center gap-1">
               <Compass className="w-4 h-4" /> 바로가기:
             </span>
             {navItems.map((item) => (
@@ -103,37 +86,6 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
                 {item.label}
               </button>
             ))}
-          </div>
-
-          {/* ZIP 다운로드 버튼 (브라우저 직접 생성 방식) */}
-          <div className="shrink-0">
-            <button
-              onClick={handleDownload}
-              disabled={isZipping}
-              className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-extrabold text-base shadow-md hover:shadow-lg transition-all border cursor-pointer w-full sm:w-auto ${
-                downloadSuccess
-                  ? 'bg-blue-600 border-blue-700'
-                  : 'bg-emerald-600 hover:bg-emerald-700 border-emerald-700'
-              }`}
-              title="대시보드 전체 소스코드를 즉시 ZIP 파일로 생성하여 다운로드합니다"
-            >
-              {isZipping ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin text-white" />
-                  <span>ZIP 압축 파일 생성 중...</span>
-                </>
-              ) : downloadSuccess ? (
-                <>
-                  <Check className="w-5 h-5 text-white" />
-                  <span>다운로드 완료!</span>
-                </>
-              ) : (
-                <>
-                  <Download className="w-5 h-5 text-emerald-100" />
-                  <span>대시보드 ZIP 다운로드</span>
-                </>
-              )}
-            </button>
           </div>
         </div>
       </div>

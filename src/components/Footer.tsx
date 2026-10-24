@@ -1,26 +1,9 @@
-import React, { useState } from 'react';
-import { ArrowUp, Heart, Sprout, Download, Check, Loader2 } from 'lucide-react';
-import { downloadProjectZip } from '../utils/downloadZip';
+import React from 'react';
+import { ArrowUp, Sprout } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const [isZipping, setIsZipping] = useState(false);
-  const [downloadSuccess, setDownloadSuccess] = useState(false);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleDownload = async () => {
-    try {
-      setIsZipping(true);
-      await downloadProjectZip();
-      setDownloadSuccess(true);
-      setTimeout(() => setDownloadSuccess(false), 4000);
-    } catch (err) {
-      console.error('ZIP 생성 오류:', err);
-    } finally {
-      setIsZipping(false);
-    }
   };
 
   return (
@@ -45,34 +28,8 @@ export const Footer: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <button
-            onClick={handleDownload}
-            disabled={isZipping}
-            className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-white font-bold text-sm sm:text-base border transition-all cursor-pointer shadow-md ${
-              downloadSuccess
-                ? 'bg-blue-600 border-blue-500'
-                : 'bg-emerald-600 hover:bg-emerald-700 border-emerald-500'
-            }`}
-          >
-            {isZipping ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>압축 중...</span>
-              </>
-            ) : downloadSuccess ? (
-              <>
-                <Check className="w-4 h-4 text-white" />
-                <span>다운로드 완료!</span>
-              </>
-            ) : (
-              <>
-                <Download className="w-4 h-4 text-emerald-200" />
-                <span>소스코드 다운로드 (ZIP)</span>
-              </>
-            )}
-          </button>
-          <button
             onClick={scrollToTop}
-            className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-stone-800 hover:bg-stone-700 text-white font-bold text-sm sm:text-base border border-stone-700 transition-all cursor-pointer shadow-md"
+            className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-stone-800 hover:bg-stone-700 text-white font-bold text-sm sm:text-base border border-stone-700 transition-all cursor-pointer"
           >
             <ArrowUp className="w-4 h-4 text-orange-400" />
             맨 위로 올라가기
